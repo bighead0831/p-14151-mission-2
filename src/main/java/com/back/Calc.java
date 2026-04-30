@@ -23,6 +23,8 @@ public class Calc {
         for(String i : expBits) {
             if(i.contains(" - "))
                 result += run(i);
+            else if(i.contains(" * "))
+                result += run(i);
             else
                 result += Integer.parseInt(i);
         }
