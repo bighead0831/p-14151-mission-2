@@ -3,16 +3,23 @@ package com.back;
 public class Calc {
     public static int run(String exp) {
         switch (chkAction(exp)) {
+            case "()" -> { return actionPre(exp); }
             case "+" -> { return actionAdd(exp); }
             case "-" -> { return actionSub(exp); }
-            case "*" -> { return actionMul(exp); }
+            case "*" -> { return actionMult(exp); }
         }
         return 0;
     }
 
+    private static int actionPre(String exp) {
+        String modifyExp = exp.substring(exp.indexOf("(") + 1, exp.lastIndexOf(")"));
+        return run(modifyExp);
+    }
+
     /* === chkAction === */
     public static String chkAction(String exp) {
-        if(exp.contains(" + ")) return "+";
+        if(exp.contains("(") && exp.contains(")")) return "()";
+        else if(exp.contains(" + ")) return "+";
         else if(exp.contains(" - ")) return "-";
         else if(exp.contains(" * ")) return "*";
         return "Keep Going";
@@ -38,7 +45,7 @@ public class Calc {
         return result;
     }
 
-    private static int actionMul(String exp) {
+    private static int actionMult(String exp) {
         String[] expBits = exp.trim().split(" \\* ");
         int result = 1;
         for (int i = 0; i < expBits.length; i++)
