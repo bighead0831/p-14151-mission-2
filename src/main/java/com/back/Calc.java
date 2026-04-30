@@ -2,7 +2,7 @@ package com.back;
 
 public class Calc {
     public static int run(String exp) {
-        switch (isAction(exp)) {
+        switch (chkAction(exp)) {
             case "+" -> { return actionAdd(exp); }
             case "-" -> { return actionSub(exp); }
             case "*" -> { return actionMul(exp); }
@@ -10,23 +10,21 @@ public class Calc {
         return 0;
     }
 
-    public static String isAction(String exp) {
+    /* === chkAction === */
+    public static String chkAction(String exp) {
         if(exp.contains(" + ")) return "+";
         else if(exp.contains(" - ")) return "-";
         else if(exp.contains(" * ")) return "*";
-        return "";
+        return "Keep Going";
     }
 
+    /* === Action === */
     private static int actionAdd(String exp) {
         String[] expBits = exp.trim().split(" \\+ ");
         int result = 0;
-        for(String i : expBits) {
-            if(i.contains(" - "))
-                result += run(i);
-            else if(i.contains(" * "))
-                result += run(i);
-            else
-                result += Integer.parseInt(i);
+        for(String expBit : expBits) {
+            result += !chkAction(expBit).equals("Keep Going") ?
+                    run(expBit) : Integer.parseInt(expBit);
         }
         return result;
     }
@@ -35,10 +33,8 @@ public class Calc {
         String[] expBits = exp.trim().split(" - ");
         int result = 0;
         for (int i = 0; i < expBits.length; i++)
-            if(expBits[i].contains(" * "))
-                result += run(expBits[i]) * (i == 0 ? 1 : -1);
-            else
-                result += Integer.parseInt(expBits[i]) * (i == 0 ? 1 : -1);
+            result += !chkAction(expBits[i]).equals("Keep Going") ?
+                    run(expBits[i]) * (i == 0 ? 1 : -1) : Integer.parseInt(expBits[i]) * (i == 0 ? 1 : -1);
         return result;
     }
 
