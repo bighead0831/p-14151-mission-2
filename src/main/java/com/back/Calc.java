@@ -3,13 +3,8 @@ package com.back;
 public class Calc {
     public static int run(String exp) {
         while(true) {
-            if(!(exp.contains("(") || exp.contains(")")))
-                break;
-            else {
-                exp = exp.substring(0, exp.lastIndexOf("(", exp.indexOf(")")))
-                        + Integer.toString(run(exp.substring(exp.lastIndexOf("(")+1, exp.indexOf(")", exp.indexOf(")")))))
-                        + exp.substring(exp.indexOf(")", exp.indexOf(")"))+1,exp.length());
-            }
+            if(!chkBoundary(exp))  break;
+            else exp = actionBoundary(exp);
         }
 
         switch (chkAction(exp)) {
@@ -20,7 +15,12 @@ public class Calc {
         }
     }
 
+
     /* === chkAction === */
+    private static boolean chkBoundary(String exp) {
+        return (exp.contains("(") || exp.contains(")"));
+    }
+
     private static String chkAction(String exp) {
         if(exp.contains(" + ")) return "+";
         else if(exp.contains(" - ")) return "-";
@@ -28,7 +28,14 @@ public class Calc {
         return "Keep Going";
     }
 
+
     /* === Action === */
+    private static String actionBoundary(String exp) {
+        return exp = exp.substring(0, exp.lastIndexOf("(", exp.indexOf(")")))
+                + Integer.toString(run(exp.substring(exp.lastIndexOf("(")+1, exp.indexOf(")", exp.indexOf(")")))))
+                + exp.substring(exp.indexOf(")", exp.indexOf(")"))+1,exp.length());
+    }
+
     private static int actionAdd(String exp) {
         String[] expBits = exp.trim().split(" \\+ ");
         int result = 0;
