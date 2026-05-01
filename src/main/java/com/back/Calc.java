@@ -32,7 +32,7 @@ public class Calc {
     /* === Action === */
     private static String actionBoundary(String exp) {
         return exp = exp.substring(0, exp.lastIndexOf("(", exp.indexOf(")")))
-                + Integer.toString(run(exp.substring(exp.lastIndexOf("(")+1, exp.indexOf(")", exp.indexOf(")")))))
+                + Integer.toString(run(exp.substring(exp.lastIndexOf("(", exp.indexOf(")"))+1, exp.indexOf(")", exp.indexOf(")")))))
                 + exp.substring(exp.indexOf(")", exp.indexOf(")"))+1,exp.length());
     }
 
