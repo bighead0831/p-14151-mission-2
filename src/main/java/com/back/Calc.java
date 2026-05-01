@@ -2,24 +2,27 @@ package com.back;
 
 public class Calc {
     public static int run(String exp) {
+        while(true) {
+            if(!(exp.contains("(") || exp.contains(")")))
+                break;
+            else {
+                exp = exp.substring(0, exp.lastIndexOf("(", exp.indexOf(")")))
+                        + Integer.toString(run(exp.substring(exp.lastIndexOf("(")+1, exp.indexOf(")", exp.indexOf(")")))))
+                        + exp.substring(exp.indexOf(")", exp.indexOf(")"))+1,exp.length());
+            }
+        }
+
         switch (chkAction(exp)) {
-            case "()" -> { return actionPre(exp); }
             case "+" -> { return actionAdd(exp); }
             case "-" -> { return actionSub(exp); }
             case "*" -> { return actionMult(exp); }
+            default -> { return Integer.parseInt(exp); }
         }
-        return 0;
-    }
-
-    private static int actionPre(String exp) {
-        String modifyExp = exp.substring(exp.indexOf("(") + 1, exp.lastIndexOf(")"));
-        return run(modifyExp);
     }
 
     /* === chkAction === */
-    public static String chkAction(String exp) {
-        if(exp.contains("(") && exp.contains(")")) return "()";
-        else if(exp.contains(" + ")) return "+";
+    private static String chkAction(String exp) {
+        if(exp.contains(" + ")) return "+";
         else if(exp.contains(" - ")) return "-";
         else if(exp.contains(" * ")) return "*";
         return "Keep Going";
